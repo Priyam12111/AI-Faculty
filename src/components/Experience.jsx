@@ -18,6 +18,7 @@ import { MessagesList } from "./MessagesList";
 import { Teacher } from "./Teacher";
 import { TypingBox } from "./TypingBox";
 import LoadingScreen from "./CustomLoadingScreen";
+
 const itemPlacement = {
   default: {
     classroom: {

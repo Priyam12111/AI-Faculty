@@ -6,7 +6,7 @@ export const MessagesList = () => {
   const playmessage = useAITeacher((state) => state.playmessage);
   const { currentMessage } = useAITeacher();
   const english = useAITeacher((state) => state.english);
-  const furigana = useAITeacher((state) => state.furigana);
+  const teacherName = useAITeacher((state) => state.teacher);
   const classroom = useAITeacher((state) => state.classroom);
 
   const container = useRef();
@@ -39,12 +39,11 @@ export const MessagesList = () => {
     >
       {messages.length === 0 && (
         <div className="h-full w-full grid place-content-center text-center">
-          <h2 className="text-8xl font-bold text-white/90 italic">
-            Welcome to the Class
-            <br />
+          <h2 className="text-8xl font-bold text-red-600 italic">
+            Welcome to the class!
           </h2>
-          <h2 className="text-8xl font-bold font-jp text-red-600/90 italic">
-            My name is Nandini Tomar
+          <h2 className="text-6xl font-semibold text-blue-600 mt-4">
+            I'm {teacherName === "Nanami" ? "Nandani Tomar" : "Manoj Kumar"}
           </h2>
         </div>
       )}

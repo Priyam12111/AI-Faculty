@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 const { create } = require("zustand");
 export const teachers = ["Nanami", "Naoki"];
 function calculateReadingTime(input, wordsPerMinute = 200) {
