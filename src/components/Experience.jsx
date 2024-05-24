@@ -17,7 +17,7 @@ import { BoardSettings } from "./BoardSettings";
 import { MessagesList } from "./MessagesList";
 import { Teacher } from "./Teacher";
 import { TypingBox } from "./TypingBox";
-
+import LoadingScreen from "./CustomLoadingScreen";
 const itemPlacement = {
   default: {
     classroom: {
@@ -51,7 +51,8 @@ export const Experience = () => {
         <TypingBox />
       </div>
       <Leva hidden />
-      <Loader />
+      <LoadingScreen />
+
       <Canvas
         camera={{
           position: [0, 0, 0.0001],
@@ -69,8 +70,10 @@ export const Experience = () => {
               <MessagesList />
               <BoardSettings />
             </Html>
-            <Environment preset="sunset" />
-            <ambientLight intensity={0.8} color="pink" />
+            {/* apartment, city, dawn, forest, lobby, night, park, studio, sunset, warehouse */}
+
+            <Environment preset="night" />
+            <ambientLight intensity={0.9} color="pink" />
 
             <Gltf
               src={`/models/classroom_${classroom}.glb`}

@@ -61,7 +61,7 @@ export function Teacher({ teacher, ...props }) {
 
   useFrame(({ camera }) => {
     // Smile
-    lerpMorphTarget("mouthSmile", 0.2, 0.5);
+    lerpMorphTarget("mouthSmile", 0.9, 0.5);
     // Blinking
     lerpMorphTarget("eye_close", blink ? 1 : 0, 0.5);
 
@@ -70,18 +70,7 @@ export function Teacher({ teacher, ...props }) {
       lerpMorphTarget(i, 0, 0.1); // reset morph targets
     }
 
-    if (
-      currentMessage &&
-      currentMessage.visemes &&
-      currentMessage.audioPlayer
-    ) {
-      for (let i = currentMessage.visemes.length - 1; i >= 0; i--) {
-        const viseme = currentMessage.visemes[i];
-        if (currentMessage.audioPlayer.currentTime * 1000 >= viseme[0]) {
-          lerpMorphTarget(viseme[1], 1, 0.2);
-          break;
-        }
-      }
+    if (currentMessage) {
       if (
         actions[animation].time >
         actions[animation].getClip().duration - ANIMATION_FADE_TIME

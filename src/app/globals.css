@@ -40,3 +40,13 @@ body {
 ::-webkit-scrollbar-thumb {
   background-color: white;
 }
+
+.heading1 {
+  font-size: 33px;
+}
+.heading2 {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-size: 30px;
+}

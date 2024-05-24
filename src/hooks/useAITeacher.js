@@ -1,16 +1,22 @@
+import { useEffect, useState } from "react";
 const { create } = require("zustand");
-
 export const teachers = ["Nanami", "Naoki"];
-
+function calculateReadingTime(input, wordsPerMinute = 200) {
+  const sentence = String(input).trim();
+  const words = sentence.split(/\s+/);
+  const wordCount = words.length;
+  const readingTime = wordCount / wordsPerMinute;
+  return Math.ceil(readingTime);
+}
 export const useAITeacher = create((set, get) => ({
   messages: [],
   currentMessage: null,
   teacher: teachers[0],
+
   setTeacher: (teacher) => {
     set(() => ({
       teacher,
       messages: get().messages.map((message) => {
-        message.audioPlayer = null; // New teacher, new Voice
         return message;
       }),
     }));
@@ -68,53 +74,37 @@ export const useAITeacher = create((set, get) => ({
       messages: [...state.messages, message],
       loading: false,
     }));
-    get().playMessage(message);
-  },
-  playMessage: async (message) => {
-    set(() => ({
-      currentMessage: message,
-    }));
+    await get().playmessage(message.answer.content);
 
-    if (!message.audioPlayer) {
+    let timeTaken = calculateReadingTime(message);
+    console.log(
+      `It will take approximately ${timeTaken} minutes to read the sentence.`
+    );
+    setTimeout(() => {
       set(() => ({
-        loading: true,
+        currentMessage: null,
       }));
-      // Get TTS
-      const audioRes = await fetch(
-        `/api/tts?teacher=${get().teacher}&text=${message.answer.japanese
-          .map((word) => word.word)
-          .join(" ")}`
+    }, timeTaken); // 10000 milliseconds = 10 seconds
+  },
+  playmessage: async (message) => {
+    if ("speechSynthesis" in window) {
+      const text = message;
+      const utterance = new SpeechSynthesisUtterance(text);
+
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(
+        (voice) => voice.voiceURI === "Google UK English Female"
       );
-      const audio = await audioRes.blob();
-      const visemes = JSON.parse(await audioRes.headers.get("visemes"));
-      const audioUrl = URL.createObjectURL(audio);
-      const audioPlayer = new Audio(audioUrl);
 
-      message.visemes = visemes;
-      message.audioPlayer = audioPlayer;
-      message.audioPlayer.onended = () => {
-        set(() => ({
-          currentMessage: null,
-        }));
-      };
-      set(() => ({
-        loading: false,
-        messages: get().messages.map((m) => {
-          if (m.id === message.id) {
-            return message;
-          }
-          return m;
-        }),
-      }));
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      } else {
+        console.warn("No suitable voice found.");
+      }
+
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert("Sorry, your browser does not support text-to-speech.");
     }
-
-    message.audioPlayer.currentTime = 0;
-    message.audioPlayer.play();
-  },
-  stopMessage: (message) => {
-    message.audioPlayer.pause();
-    set(() => ({
-      currentMessage: null,
-    }));
   },
 }));
