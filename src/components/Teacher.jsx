@@ -50,15 +50,28 @@ export function Teacher({ teacher, ...props }) {
   }, []);
 
   useEffect(() => {
+    let idleTimeout;
+
     if (loading) {
+      console.log("Teacher is Thinking");
       setAnimation("Thinking");
     } else if (currentMessage) {
+      console.log("Teacher is talking");
       setAnimation(randInt(0, 1) ? "Talking" : "Talking2");
     } else {
-      setAnimation("Idle");
+      console.log("Teacher is Resting");
+      idleTimeout = setTimeout(function () {
+        setAnimation("Idle");
+      }, 5000); // 10000 milliseconds = 10 seconds
     }
-  }, [currentMessage, loading]);
 
+    // Cleanup function to clear the timeout if the component re-renders
+    return () => {
+      if (idleTimeout) {
+        clearTimeout(idleTimeout);
+      }
+    };
+  }, [currentMessage, loading]);
   useFrame(({ camera }) => {
     // Smile
     lerpMorphTarget("mouthSmile", 0.9, 0.5);
@@ -70,15 +83,15 @@ export function Teacher({ teacher, ...props }) {
       lerpMorphTarget(i, 0, 0.1); // reset morph targets
     }
 
-    if (currentMessage) {
-      if (
-        actions[animation].time >
-        actions[animation].getClip().duration - ANIMATION_FADE_TIME
-      ) {
-        setAnimation((animation) =>
-          animation === "Talking" ? "Talking2" : "Talking"
-        ); // Could load more type of animations and randomization here
-      }
+    if (
+      actions[animation].time >
+      actions[animation].getClip().duration - ANIMATION_FADE_TIME
+    ) {
+      setAnimation((animation) =>
+        animation === "Talking" ? "Talking2" : "Talking"
+      ); // Could load more type of animations and randomization here
+    } else {
+      setAnimation("Idle");
     }
   });
 

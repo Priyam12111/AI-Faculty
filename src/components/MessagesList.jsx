@@ -43,7 +43,7 @@ export const MessagesList = () => {
             Welcome to the class!
           </h2>
           <h2 className="text-6xl font-semibold text-blue-600 mt-4">
-            I'm {teacherName === "Nanami" ? "Nandani Tomar" : "Manoj Kumar"}
+            I'm {teacherName === "Nanami" ? "Nandani Tomar" : "Sandeep"}
           </h2>
         </div>
       )}

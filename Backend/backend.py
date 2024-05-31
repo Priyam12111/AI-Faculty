@@ -15,6 +15,12 @@ def send_prompt():
 @check_execution_time
 def sendPrompt(promt):
     print(driver.title)
+    if 'Continue' not in promt and 'np' not in promt:
+        promt = f'{promt}, explain in two lines'
+
+    # for i in range(3):
+    #     if i>0:
+    #         promt = 'continue two more lines'
     element = driver.find_element(by=By.XPATH,value=f'//*[@id="prompt-textarea"]')
     element.send_keys(promt)
     try:

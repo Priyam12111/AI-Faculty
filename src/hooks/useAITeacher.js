@@ -60,30 +60,40 @@ export const useAITeacher = create((set, get) => ({
     const speech = get().speech;
 
     // Ask AI
-    const res = await fetch(`/api/ai?question=${question}&speech=${speech}`);
-    const data = await res.json();
-    message.answer = data;
-    message.speech = speech;
+    for (let i = 0; i < 1; i++) {
+      setTimeout(async () => {
+        // Delay execution by 20 seconds
+        if (i > 0) {
+          question = "Continue 2 more lines";
+        }
+        const res = await fetch(
+          `/api/ai?question=${question}&speech=${speech}`
+        );
+        const data = await res.json();
+        message.answer = data;
+        message.speech = speech;
 
-    set(() => ({
-      currentMessage: message,
-    }));
+        set(() => ({
+          currentMessage: message,
+        }));
 
-    set((state) => ({
-      messages: [...state.messages, message],
-      loading: false,
-    }));
-    await get().playmessage(message.answer.content);
+        set((state) => ({
+          messages: [...state.messages, message],
+          loading: false,
+        }));
+        await get().playmessage(message.answer.content);
 
-    let timeTaken = calculateReadingTime(message);
-    console.log(
-      `It will take approximately ${timeTaken} minutes to read the sentence.`
-    );
-    setTimeout(() => {
-      set(() => ({
-        currentMessage: null,
-      }));
-    }, timeTaken); // 10000 milliseconds = 10 seconds
+        let timeTaken = calculateReadingTime(message);
+        console.log(
+          `It will take approximately ${timeTaken} minutes to read the sentence.`
+        );
+        setTimeout(() => {
+          set(() => ({
+            currentMessage: null,
+          }));
+        }, timeTaken); // 10000 milliseconds = 10 seconds
+      }, 20000 * i); // Multiply the delay by the iteration index
+    }
   },
   playmessage: async (message) => {
     if ("speechSynthesis" in window) {
@@ -91,13 +101,18 @@ export const useAITeacher = create((set, get) => ({
       const utterance = new SpeechSynthesisUtterance(text);
 
       const voices = window.speechSynthesis.getVoices();
-      const preferredVoice = voices.find(
+      let preferredVoice = voices.find(
         (voice) => voice.voiceURI === "Google UK English Female"
       );
 
       if (preferredVoice) {
         utterance.voice = preferredVoice;
       } else {
+        preferredVoice = voices.find(
+          (voice) => voice.voiceURI === "Google UK English Female"
+        );
+        utterance.voice = preferredVoice;
+
         console.warn("No suitable voice found.");
       }
 
