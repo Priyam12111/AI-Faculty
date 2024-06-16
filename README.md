@@ -12,8 +12,8 @@ Brief description of your project.
 - [License](#license)
 
 ## Demo
+![AndroidDanceGIF](https://github.com/Priyam12111/AI-Powered-Faculty/assets/88043917/666b6b8e-0e8a-4274-990a-14f621fa271a)
 
-Include a GIF or a screenshot of your project in action.
 
 ![Demo](demo.gif)
 
