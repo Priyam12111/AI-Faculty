@@ -8,7 +8,7 @@ Brief description of your project.
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
+- [Preview](#LivePreview)
 - [License](#license)
 
 ## Demo
@@ -21,9 +21,8 @@ Include a GIF or a screenshot of your project in action.
 
 List key features of your project.
 
-- Feature 1
-- Feature 2
-- ...
+- It can teach you a topic on asking
+
 
 ## Installation
 
@@ -34,3 +33,6 @@ git clone https://github.com/yourusername/your-repository.git
 cd your-repository
 npm install
 npm start
+```
+## Live Preview
+- https://willowy-medovik-3fe3ae.netlify.app/
