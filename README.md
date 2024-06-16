@@ -29,10 +29,10 @@ List key features of your project.
 Provide instructions on how to install and run your project locally.
 
 ```bash
-git clone https://github.com/yourusername/your-repository.git
-cd your-repository
+git clone https://github.com/Priyam12111/AI-Powered-Faculty
+cd AI-Powered-Faculty
 npm install
-npm start
+npm run dev 
 ```
 ## Live Preview
 - https://willowy-medovik-3fe3ae.netlify.app/
