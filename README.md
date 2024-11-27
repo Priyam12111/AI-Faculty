@@ -1,5 +1,5 @@
 # AI-Powered Faculty
-AI-Powered Faculty is an interactive 3D web application designed to simplify complex topics by providing clear, accessible explanations through AI-powered models. The app is built to make learning engaging and user-friendly, leveraging cutting-edge AI to enhance educational experiences.
+AI-Powered Faculty is an interactive 3D web applications designed to simplify complex topics by providing clear, accessible explanations through AI-powered models. The app is built to make learning engaging and user-friendly, leveraging cutting-edge AI to enhance educational experiences.
 
 # Features
 3D Web Interface: Engage with topics in an interactive 3D environment.
