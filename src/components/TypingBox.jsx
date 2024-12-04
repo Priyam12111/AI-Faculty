@@ -1,6 +1,5 @@
 import { useAITeacher } from "@/hooks/useAITeacher";
 import { useState } from "react";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 export const TypingBox = () => {
   const askAI = useAITeacher((state) => state.askAI);
   const [question, setQuestion] = useState("");
@@ -46,6 +45,7 @@ export const TypingBox = () => {
 
   return (
     <div className="z-10 max-w-[600px] flex space-y-6 flex-col bg-gradient-to-tr from-slate-300/30 via-gray-400/30 to-slate-600-400/30 p-4 backdrop-blur-md rounded-xl border-slate-100/30 border">
+
       <div>
         <h2 className="text-white font-bold text-xl">Please ask a question</h2>
         <p className="text-white/65">
@@ -53,12 +53,7 @@ export const TypingBox = () => {
           explanation of that topic
         </p>
       </div>
-      <div className="flex justify-center items-center">
-        <span className="relative flex h-4 w-4">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-4 w-4 bg-white"></span>
-        </span>
-      </div>
+
       <div className="gap-3 flex">
         <input
           id="QuestionInput"
@@ -79,9 +74,8 @@ export const TypingBox = () => {
           Ask
         </button>
         <button
-          className={`${isListening ? "bg-red-500" : "bg-blue-500"} hover:${
-            isListening ? "bg-red-700" : "bg-blue-700"
-          } text-white font-bold py-2 px-6 rounded-full shadow-lg flex items-center`}
+          className={`${isListening ? "bg-red-500" : "bg-blue-500"} hover:${isListening ? "bg-red-700" : "bg-blue-700"
+            } text-white font-bold py-2 px-6 rounded-full shadow-lg flex items-center`}
           onClick={handleVoiceInput}
         >
           <i className="fas fa-microphone mr-2"></i>

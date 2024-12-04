@@ -4,7 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-/Backend/eenv
 .yarn/install-state.gz
 
 # testing

@@ -11,13 +11,12 @@ import {
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Leva, button, useControls } from "leva";
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { degToRad } from "three/src/math/MathUtils";
 import { BoardSettings } from "./BoardSettings";
 import { MessagesList } from "./MessagesList";
 import { Teacher } from "./Teacher";
 import { TypingBox } from "./TypingBox";
-import LoadingScreen from "./CustomLoadingScreen";
 
 const itemPlacement = {
   default: {
@@ -45,15 +44,39 @@ const itemPlacement = {
 export const Experience = () => {
   const teacher = useAITeacher((state) => state.teacher);
   const classroom = useAITeacher((state) => state.classroom);
-
+  const [preset, setPreset] = useState("night")
+  const handleChange = (e) => {
+    console.log(e.target.value)
+    setPreset(e.target.value)
+  }
   return (
     <>
       <div className="z-10 md:justify-center fixed bottom-4 left-4 right-4 flex gap-3 flex-wrap justify-stretch">
-        <TypingBox />
-      </div>
-      <Leva hidden />
-      <LoadingScreen />
 
+
+        <button className="dropdown-container z-10 max-w-[600px] flex space-y-6 flex-col bg-gradient-to-tr from-slate-300/30 via-gray-400/30 to-slate-600-400/30 p-4 backdrop-blur-md rounded-xl border-slate-100/30 border">
+          <h2 className="dropdown-title">Preset</h2>
+          <select
+            value={preset}
+            onChange={handleChange}
+            className="dropdown-select"
+          >
+            <option value="apartment">Apartment</option>
+            <option value="city">City</option>
+            <option value="dawn">Dawn</option>
+            <option value="forest">Forest</option>
+            <option value="lobby">Lobby</option>
+            <option value="night">Night</option>
+            <option value="park">Park</option>
+            <option value="studio">Studio</option>
+            <option value="sunset">Sunset</option>
+            <option value="warehouse">Warehouse</option>
+          </select>
+        </button>
+        <TypingBox />
+      </div >
+      <Leva hidden />
+      <Loader />
       <Canvas
         camera={{
           position: [0, 0, 0.0001],
@@ -71,9 +94,7 @@ export const Experience = () => {
               <MessagesList />
               <BoardSettings />
             </Html>
-            {/* apartment, city, dawn, forest, lobby, night, park, studio, sunset, warehouse */}
-
-            <Environment preset="night" />
+            <Environment preset={preset} />
             <ambientLight intensity={0.9} color="pink" />
 
             <Gltf

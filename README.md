@@ -1,35 +1,9 @@
-# AI-Powered Faculty
-AI-Powered Faculty is an interactive 3D web applications designed to simplify complex topics by providing clear, accessible explanations through AI-powered models. The app is built to make learning engaging and user-friendly, leveraging cutting-edge AI to enhance educational experiences.
+![Video Thumbnail](https://img.youtube.com/vi/_bi4Ol0QEL4/maxresdefault.jpg)
 
-# Features
-3D Web Interface: Engage with topics in an interactive 3D environment.
-AI-Driven Explanations: Uses advanced AI to break down difficult topics into simpler language.
-Customizable Learning: Adjust the learning pace and complexity to meet individual needs.
+[Video tutorial](https://youtu.be/_bi4Ol0QEL4)
 
-# Technology Stack
-Frontend: Next.js,Three.js
-AI Models:NLP models for explanations
 
-# Installation
-Clone this repository:
-```bash
-git clone https://github.com/YourUsername/AI-Powered-Faculty.git
-```
-Install dependencies:
-```bash
-cd AI-Powered-Faculty
-npm install
-```
-Start the development server:
-```bash
-npm start
-```
-# Usage
-Open the web application in your browser.
-Select a topic to explore and begin learning with guided AI explanations.
-Adjust explanation detail or complexity as needed.
-Contribution
-Contributions are welcome! Please fork the repository, create a branch for your feature, and submit a pull request.
+## Deploy on Elestio
 
-License
-Distributed under the MIT License. See LICENSE for more information.
+The easiest way to deploy your Next.js app is to use the [Elestio Platform](https://ellest.io).
+

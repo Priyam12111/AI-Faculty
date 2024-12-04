@@ -1,21 +1,15 @@
 const { create } = require("zustand");
+import { saveAs } from "file-saver";
 export const teachers = ["Nanami", "Naoki"];
-function calculateReadingTime(input, wordsPerMinute = 200) {
-  const sentence = String(input).trim();
-  const words = sentence.split(/\s+/);
-  const wordCount = words.length;
-  const readingTime = wordCount / wordsPerMinute;
-  return Math.ceil(readingTime);
-}
 export const useAITeacher = create((set, get) => ({
   messages: [],
   currentMessage: null,
   teacher: teachers[0],
-
   setTeacher: (teacher) => {
     set(() => ({
       teacher,
       messages: get().messages.map((message) => {
+        message.audioPlayer = null; // New teacher, new Voice
         return message;
       }),
     }));
@@ -27,18 +21,6 @@ export const useAITeacher = create((set, get) => ({
     }));
   },
   loading: false,
-  furigana: true,
-  setFurigana: (furigana) => {
-    set(() => ({
-      furigana,
-    }));
-  },
-  english: true,
-  setEnglish: (english) => {
-    set(() => ({
-      english,
-    }));
-  },
   speech: "formal",
   setSpeech: (speech) => {
     set(() => ({
@@ -60,65 +42,62 @@ export const useAITeacher = create((set, get) => ({
     const speech = get().speech;
 
     // Ask AI
-    for (let i = 0; i < 1; i++) {
-      setTimeout(async () => {
-        // Delay execution by 20 seconds
-        if (i > 0) {
-          question = "Continue 2 more lines";
-        }
-        const res = await fetch(
-          `/api/ai?question=${question}&speech=${speech}`
-        );
-        const data = await res.json();
-        message.answer = data;
-        message.speech = speech;
+    const res = await fetch(`/api/ai?question=${question}&speech=${speech}`);
+    const data = await res.json();
+    message.answer = data;
+    message.speech = speech;
 
-        set(() => ({
-          currentMessage: message,
-        }));
+    set(() => ({
+      currentMessage: message,
+    }));
 
-        set((state) => ({
-          messages: [...state.messages, message],
-          loading: false,
-        }));
-        await get().playmessage(message.answer.content);
-
-        let timeTaken = calculateReadingTime(message);
-        console.log(
-          `It will take approximately ${timeTaken} minutes to read the sentence.`
-        );
-        setTimeout(() => {
-          set(() => ({
-            currentMessage: null,
-          }));
-        }, timeTaken); // 10000 milliseconds = 10 seconds
-      }, 20000 * i); // Multiply the delay by the iteration index
-    }
+    set((state) => ({
+      messages: [...state.messages, message],
+      loading: false,
+    }));
+    get().playMessage(message);
   },
-  playmessage: async (message) => {
-    if ("speechSynthesis" in window) {
-      const text = message;
-      const utterance = new SpeechSynthesisUtterance(text);
+  playMessage: async (message) => {
+    try {
+      set(() => ({
+        currentMessage: message,
+      }));
 
-      const voices = window.speechSynthesis.getVoices();
-      let preferredVoice = voices.find(
-        (voice) => voice.voiceURI === "Google UK English Female"
-      );
-
-      if (preferredVoice) {
-        utterance.voice = preferredVoice;
-      } else {
-        preferredVoice = voices.find(
-          (voice) => voice.voiceURI === "Google UK English Female"
-        );
-        utterance.voice = preferredVoice;
-
-        console.warn("No suitable voice found.");
+      if (!message.audioPlayer) {
+        set(() => ({
+          loading: true,
+        }));
       }
 
-      window.speechSynthesis.speak(utterance);
-    } else {
-      alert("Sorry, your browser does not support text-to-speech.");
+      // Fetch the audio from the Flask API
+      const response = await fetch(
+        `https://priyam144.pythonanywhere.com/generate-speech?msg=${message.answer.ans[0]}&lang=en`
+      );
+      if (response.ok) {
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+
+        const audio = new Audio(audioUrl);
+        audio.play();
+
+        // Update loading state
+        set(() => ({
+          loading: false,
+        }));
+      } else {
+        throw new Error("Failed to fetch audio");
+      }
+    } catch (error) {
+      console.error("Error in playMessage:", error);
+      set(() => ({
+        loading: false,
+      }));
     }
+  },
+
+  stopMessage: (message) => {
+    set(() => ({
+      currentMessage: null,
+    }));
   },
 }));
